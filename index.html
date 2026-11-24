@@ -6,30 +6,58 @@
     <title>Special For You</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://files.dariku.my.id/dks205/s.css" />
+
     <style>
-  /* MATIIN SEMUA GAMBAR BACKGROUND BUKU */
-  body, .container, .container *, .cover, .card, .book {
-    background-image: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
+      /* === MODE B: HILANGIN BUKU TOTAL === */
+      body {
+        background: #FFF7E6 !important;
+        background-image: none !important;
+      }
 
-  /* MATIIN SPIRAL HITAM DI ATAS (ini pake ::before / ::after) */
-  .container::before, .container::after,
-  .cover::before, .cover::after,
-  .card::before, .card::after {
-    display: none !important;
-    content: none !important;
-  }
+      /* Matikan semua background buku / cover / kartu */
+      .container, .container *, .cover, .card, .book, .content, .isi {
+        background: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+      }
 
-  /* Background belakangnya jadi polos cream */
-  body {
-    background: #FFF7E6 !important;
-  }
-      </style>
+      /* Matikan spiral + ornamen buku (pake ::before / ::after) */
+      .container::before, .container::after,
+      .cover::before, .cover::after,
+      .card::before, .card::after,
+      .content::before, .content::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+      }
+
+      /* Biar containernya full lebar, gak kaya kartu lagi */
+      .container {
+        width: 100% !important;
+        max-width: 500px !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+        border-radius: 0 !important;
+      }
+
+      /* Foto tetep kelihatan bagus, gak ketutup */
+      .container img {
+        background: transparent !important;
+        border-radius: 15px !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+      }
+
+      /* Tombol tetep kelihatan */
+      .btn-start, .btn-next, .btn-message {
+        background: #FFB6C1 !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
+      }
+    </style>
   </head>
-  <body">
+  <body>
     <div class="preload">
       <div></div>
       <div></div>
@@ -45,40 +73,23 @@
 
     <script src="https://files.dariku.my.id/dks205/s.js"></script>
     <script>
-      // Teks pada cover
       textOpening = "Special For You";
-
-      // File musik
-      musik = "";
-
-      // [OPSIONAL] isi background jika tidak ingin menggunakan bakground bawaan
+      musik = "m4.mp3";
       background = "";
-
-      // Jika menggunakan 1 gambar, isi pada cover1 saja
-      // Atau isi semuanya jika ingin menggunakan 4 gambar
-      // Note: hanya bisa menggunakan 1 gambar atau 4 sekaligus
       cover1 = "";
       cover2 = "";
       cover3 = "";
       cover4 = "";
 
-      // Jika ingin menambahkan ucapan ikuti seperti contoh
       konten = [
-        {
-          gambar: "File gambar",
-          ucapan: "Ucapan 1",
-        },
-        {
-          gambar: "File gambar",
-          ucapan: "Ucapan 2",
-        },
-        {
-          gambar: "File gambar",
-          ucapan: "Ucapan 3",
-        },
+        { gambar: "g1.jpg", ucapan: "loh ?udah di titik ini ternyata ?" },
+        { gambar: "g4.jpg", ucapan: "katanya gbisa ? ko ini bisa ?" },
+        { gambar: "g6.jpg", ucapan: "nanti juga sama kok !!" },
+        { gambar: "g2.jpg", ucapan: "kamu pasti bisa lewatinya...kan kamu hebat !!" },
+        { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
       ];
 
-      // [OPSIONAL] Diawali 62
+      // ISI NOMOR WA KAMU DISINI, contoh: "628123456789"
       nomorWhatsapp = "";
 
       var swalo = Swal.mixin({ allowOutsideClick: false, reverseButtons: true });
