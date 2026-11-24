@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Special For You</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://files.dariku.my.id/dks205/s.css" />
 <style>
   /* === MATIIN SEMUA BAYANGAN === */
     * {
@@ -42,3 +50,58 @@
     box-shadow: none !important;
   }
 </style>
+  </head>
+  <body>
+    <div class="preload">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="container">
+      <div class="btn-c">
+        <button class="btn-start show">Klik Disini</button>
+        <button class="btn-next">Lanjut</button>
+        <button class="btn-message">Kirim Pesan</button>
+      </div>
+    </div>
+
+    <script src="https://files.dariku.my.id/dks205/s.js"></script>
+    <script>
+      textOpening = "Special For You";
+      musik = "m4.mp3";
+      background = "";
+      cover1 = "";
+      cover2 = "";
+      cover3 = "";
+      cover4 = "";
+
+      konten = [
+        { gambar: "g1.jpg", ucapan: "loh ?udah di titik ini ternyata ?" },
+        { gambar: "g4.jpg", ucapan: "katanya gbisa ? ko ini bisa ?" },
+        { gambar: "g6.jpg", ucapan: "nanti juga sama kok !!" },
+        { gambar: "g2.jpg", ucapan: "kamu pasti bisa lewatinya...kan kamu hebat !!" },
+        { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
+      ];
+
+      // ISI NOMOR WA KAMU DISINI, contoh: "628123456789"
+      nomorWhatsapp = "";
+
+      var swalo = Swal.mixin({ allowOutsideClick: false, reverseButtons: true });
+      async function kirimPesan() {
+        klikA.play();
+        var { value: pesan } = await swalo.fire({ title: "Tulis pesan", input: "textarea", confirmButtonText: "Kirim" });
+        klikA.play();
+        if (pesan) {
+          await swalo.fire({ title: "Kirim pesannya ke wa aku ya" });
+          location.assign(`https://wa.me/${nomorWhatsapp}?text=${pesan}`);
+        } else {
+          await swalo.fire({ title: "Jangan dikosongin ya :)" });
+          kirimPesan();
+        }
+      }
+
+      isKlikAudio = 1;
+      DekaTutorial(konten, musik, textOpening, background, cover1, cover2, cover3, cover4, kirimPesan, isKlikAudio);
+    </script>
+  </body>
+</html>
