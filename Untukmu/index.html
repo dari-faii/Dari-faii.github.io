@@ -1,147 +1,145 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Special For You</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://files.dariku.my.id/dks205/s.css" />
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Special For You</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #FFF7E6;
+    font-family: sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 20px;
+  }
+  .wrap { width: 100%; max-width: 420px; text-align: center; }
 
-    <style>
-      /* === MATIIN BUKU + BAYANGAN === */
-      * {
-        box-shadow: none !important;
-        text-shadow: none !important;
-        filter: none !important;
-      }
-      *::before, *::after {
-        box-shadow: none !important;
-        filter: none !important;
-      }
-      body {
-        background: #FFF7E6 !important;
-        background-image: none !important;
-      }
-      .container, .container *, .cover, .card, .book {
-        background: transparent !important;
-        background-image: none !important;
-        border: none !important;
-      }
+  /* COVER */
+  #cover h1 { font-size: 28px; margin-bottom: 10px; }
+  #cover p { font-size: 14px; color: #666; margin-bottom: 20px; }
+  #btnLove {
+    font-size: 90px; background: none; border: none; cursor: pointer;
+    animation: degdegan 1s infinite;
+  }
+  @keyframes degdegan {
+    0% { transform: scale(1); } 25% { transform: scale(1.15); }
+    40% { transform: scale(1); } 60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  .pencet { font-size: 14px; margin-top: 5px; }
 
-      /* === TOMBOL LOVE AWAL === */
-      .btn-start {
-        background: transparent !important;
-        border: none !important;
-        font-size: 90px !important;
-        line-height: 1 !important;
-        padding: 20px !important;
-        cursor: pointer !important;
-        animation: degdegan 1s infinite !important;
-        position: relative !important;
-        z-index: 10 !important;
-      }
-      @keyframes degdegan {
-        0% { transform: scale(1); }
-        25% { transform: scale(1.15); }
-        40% { transform: scale(1); }
-        60% { transform: scale(1.2); }
-        100% { transform: scale(1); }
-      }
+  /* ISI */
+  #isi { display: none; }
+  #isi img {
+    width: 100%; border-radius: 18px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  #ucapan { font-size: 20px; font-weight: bold; margin: 18px 0; line-height: 1.4; }
+  .btn-pink {
+    background: #FFB6C1; border: 2px solid #000;
+    padding: 12px 28px; border-radius: 30px;
+    font-size: 16px; font-weight: bold; cursor: pointer;
+  }
 
-      /* === LOVE KECIL YANG MELEDAK === */
-      .love-kecil {
-        position: fixed !important;
-        font-size: 24px !important;
-        pointer-events: none !important;
-        z-index: 9999 !important;
-        animation: meledak 1s ease-out forwards !important;
-      }
-      @keyframes meledak {
-        0% { transform: translate(0,0) scale(1); opacity: 1; }
-        100% { transform: translate(var(--x), var(--y)) scale(0.5) rotate(180deg); opacity: 0; }
-      }
+  /* LOVE MELEDAK */
+  .love-kecil {
+    position: fixed; font-size: 24px; pointer-events: none; z-index: 9999;
+    animation: meledak 1s ease-out forwards;
+  }
+  @keyframes meledak {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0.5) rotate(180deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- HALAMAN AWAL -->
+  <div id="cover">
+    <h1>Special For You</h1>
+    <p>ada sesuatu buat kamu</p>
+    <button id="btnLove">❤️</button>
+    <div class="pencet">pencet love nya</div>
+  </div>
 
-      /* Tombol lain tetep kelihatan */
-      .btn-next, .btn-message {
-        background: #FFB6C1 !important;
-        color: #000 !important;
-        border: 2px solid #000 !important;
-      }
-      .container img {
-        border-radius: 15px !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="preload">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <div class="container">
-      <div class="btn-c">
-        <button class="btn-start show">❤️</button>
-        <button class="btn-next">Lanjut</button>
-        <button class="btn-message">Kirim Pesan</button>
-      </div>
-    </div>
+  <!-- HALAMAN ISI -->
+  <div id="isi">
+    <img id="foto" src="" />
+    <div id="ucapan"></div>
+    <button id="btnNext" class="btn-pink">Lanjut ❤️</button>
+    <button id="btnKirim" class="btn-pink" style="display:none;">Kirim Pesan</button>
+  </div>
+</div>
 
-    <script src="https://files.dariku.my.id/dks205/s.js"></script>
-    <script>
-      textOpening = "Special For You";
-      musik = "m4.mp3";
-      background = "";
-      cover1 = "";
-      cover2 = "";
-      cover3 = "";
-      cover4 = "";
+<script>
+  const konten = [
+    { gambar: "g1.jpg", ucapan: "loh ?udah di titik ini ternyata ?" },
+    { gambar: "g4.jpg", ucapan: "katanya gbisa ? ko ini bisa ?" },
+    { gambar: "g6.jpg", ucapan: "nanti juga sama kok !!" },
+    { gambar: "g2.jpg", ucapan: "kamu pasti bisa lewatinya...kan kamu hebat !!" },
+    { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
+  ];
 
-      konten = [
-        { gambar: "g1.jpg", ucapan: "loh ?udah di titik ini ternyata ?" },
-        { gambar: "g4.jpg", ucapan: "katanya gbisa ? ko ini bisa ?" },
-        { gambar: "g6.jpg", ucapan: "nanti juga sama kok !!" },
-        { gambar: "g2.jpg", ucapan: "kamu pasti bisa lewatinya...kan kamu hebat !!" },
-        { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
-      ];
+  // ISI NOMOR WA KAMU, contoh: "628123456789"
+  const nomorWhatsapp = "";
 
-      nomorWhatsapp = "";
+  let index = 0;
+  const cover = document.getElementById('cover');
+  const isi = document.getElementById('isi');
+  const foto = document.getElementById('foto');
+  const ucapanEl = document.getElementById('ucapan');
+  const btnNext = document.getElementById('btnNext');
+  const btnKirim = document.getElementById('btnKirim');
 
-      var swalo = Swal.mixin({ allowOutsideClick: false, reverseButtons: true });
-      async function kirimPesan() {
-        klikA.play();
-        var { value: pesan } = await swalo.fire({ title: "Tulis pesan", input: "textarea", confirmButtonText: "Kirim" });
-        klikA.play();
-        if (pesan) {
-          await swalo.fire({ title: "Kirim pesannya ke wa aku ya" });
-          location.assign(`https://wa.me/${nomorWhatsapp}?text=${pesan}`);
-        } else {
-          await swalo.fire({ title: "Jangan dikosongin ya :)" });
-          kirimPesan();
-        }
-      }
+  function tampilkan() {
+    foto.src = konten[index].gambar;
+    ucapanEl.innerText = konten[index].ucapan;
+    if (index === konten.length - 1) {
+      btnNext.style.display = 'none';
+      btnKirim.style.display = 'inline-block';
+    }
+  }
 
-      isKlikAudio = 1;
-      DekaTutorial(konten, musik, textOpening, background, cover1, cover2, cover3, cover4, kirimPesan, isKlikAudio);
+  document.getElementById('btnLove').addEventListener('click', function(e) {
+    // Efek meledak
+    const loves = ['❤️','💖','💗','💓','💕','🥰'];
+    for (let i = 0; i < 25; i++) {
+      const span = document.createElement('span');
+      span.className = 'love-kecil';
+      span.innerText = loves[Math.floor(Math.random() * loves.length)];
+      span.style.left = e.clientX + 'px';
+      span.style.top = e.clientY + 'px';
+      const angle = (Math.PI * 2 * i) / 25;
+      const jarak = 100 + Math.random() * 150;
+      span.style.setProperty('--x', Math.cos(angle) * jarak + 'px');
+      span.style.setProperty('--y', Math.sin(angle) * jarak + 'px');
+      document.body.appendChild(span);
+      setTimeout(() => span.remove(), 1000);
+    }
+    // Pindah ke isi setelah 600ms biar ledakannya kelihatan dulu
+    setTimeout(() => {
+      cover.style.display = 'none';
+      isi.style.display = 'block';
+      tampilkan();
+    }, 600);
+  });
 
-      // === EFEK MELEDAK PAS PENCET LOVE ===
-      document.querySelector('.btn-start').addEventListener('click', function(e) {
-        const loves = ['❤️','💖','💗','💓','💕','🥰','❤️'];
-        for (let i = 0; i < 25; i++) {
-          const span = document.createElement('span');
-          span.className = 'love-kecil';
-          span.innerText = loves[Math.floor(Math.random() * loves.length)];
-          span.style.left = e.clientX + 'px';
-          span.style.top = e.clientY + 'px';
-          // Acak arah ledakannya
-          const angle = (Math.PI * 2 * i) / 25;
-          const jarak = 100 + Math.random() * 150;
-          span.style.setProperty('--x', Math.cos(angle) * jarak + 'px');
-          span.style.setProperty('--y', Math.sin(angle) * jarak + 'px');
-          document.body.appendChild(span);
-          setTimeout(() => span.remove(), 1000);
-        }
-      });
-    </script>
-  </body>
+  btnNext.addEventListener('click', () => { index++; tampilkan(); });
+
+  btnKirim.addEventListener('click', async () => {
+    const { value: pesan } = await Swal.fire({ title: "Tulis pesan", input: "textarea", confirmButtonText: "Kirim" });
+    if (pesan) {
+      await Swal.fire({ title: "Kirim pesannya ke wa aku ya" });
+      location.assign(`https://wa.me/${nomorWhatsapp}?text=${encodeURIComponent(pesan)}`);
+    } else {
+      await Swal.fire({ title: "Jangan dikosongin ya :)" });
+    }
+  });
+</script>
+</body>
 </html>
