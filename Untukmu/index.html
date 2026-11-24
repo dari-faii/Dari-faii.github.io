@@ -33,18 +33,22 @@
   }
   .pencet { font-size: 14px; margin-top: 5px; }
 
-  /* ISI */
+  /* ISI + EFEK FADE 3 DETIK */
   #isi { display: none; }
   #isi img {
     width: 100%; border-radius: 18px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: opacity 0.5s;
   }
-  #ucapan { font-size: 20px; font-weight: bold; margin: 18px 0; line-height: 1.4; }
+  #isi.fade-out img, #isi.fade-out #ucapan { opacity: 0; }
+  #ucapan { font-size: 20px; font-weight: bold; margin: 18px 0; line-height: 1.4; transition: opacity 0.5s; }
   .btn-pink {
     background: #FFB6C1; border: 2px solid #000;
     padding: 12px 28px; border-radius: 30px;
     font-size: 16px; font-weight: bold; cursor: pointer;
   }
+  .btn-pink:disabled { opacity: 0.6; cursor: wait; }
+  #tunggu { display: none; font-size: 13px; color: #888; margin-top: 10px; }
 
   /* LOVE MELEDAK */
   .love-kecil {
@@ -59,7 +63,6 @@
 </head>
 <body>
 <div class="wrap">
-  <!-- HALAMAN AWAL -->
   <div id="cover">
     <h1>Special For You</h1>
     <p>ada sesuatu buat kamu</p>
@@ -67,14 +70,17 @@
     <div class="pencet">pencet love nya</div>
   </div>
 
-  <!-- HALAMAN ISI -->
   <div id="isi">
     <img id="foto" src="" />
     <div id="ucapan"></div>
     <button id="btnNext" class="btn-pink">Lanjut ❤️</button>
     <button id="btnKirim" class="btn-pink" style="display:none;">Kirim Pesan</button>
+    <div id="tunggu">tunggu bentar ya... 💌</div>
   </div>
 </div>
+
+<!-- MUSIKNYA DISINI -->
+<audio id="musik" src="m4.mp3" loop preload="auto"></audio>
 
 <script>
   const konten = [
@@ -85,16 +91,17 @@
     { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
   ];
 
-  // ISI NOMOR WA KAMU, contoh: "628123456789"
   const nomorWhatsapp = "";
-
   let index = 0;
+
   const cover = document.getElementById('cover');
   const isi = document.getElementById('isi');
   const foto = document.getElementById('foto');
   const ucapanEl = document.getElementById('ucapan');
   const btnNext = document.getElementById('btnNext');
   const btnKirim = document.getElementById('btnKirim');
+  const tunggu = document.getElementById('tunggu');
+  const musik = document.getElementById('musik');
 
   function tampilkan() {
     foto.src = konten[index].gambar;
@@ -106,7 +113,10 @@
   }
 
   document.getElementById('btnLove').addEventListener('click', function(e) {
-    // Efek meledak
+    // 1. NYALAIN MUSIK - harus di dalam klik biar gak diblokir HP
+    musik.play().catch(() => {});
+
+    // 2. EFEK MELEDAK
     const loves = ['❤️','💖','💗','💓','💕','🥰'];
     for (let i = 0; i < 25; i++) {
       const span = document.createElement('span');
@@ -121,7 +131,7 @@
       document.body.appendChild(span);
       setTimeout(() => span.remove(), 1000);
     }
-    // Pindah ke isi setelah 600ms biar ledakannya kelihatan dulu
+
     setTimeout(() => {
       cover.style.display = 'none';
       isi.style.display = 'block';
@@ -129,7 +139,22 @@
     }, 600);
   });
 
-  btnNext.addEventListener('click', () => { index++; tampilkan(); });
+  // 3. TOMBOL LANJUT + JEDA 3 DETIK
+  btnNext.addEventListener('click', () => {
+    btnNext.disabled = true;
+    btnNext.innerText = "Tunggu...";
+    tunggu.style.display = 'block';
+    isi.classList.add('fade-out');
+
+    setTimeout(() => {
+      index++;
+      tampilkan();
+      isi.classList.remove('fade-out');
+      btnNext.disabled = false;
+      btnNext.innerText = "Lanjut ❤️";
+      tunggu.style.display = 'none';
+    }, 3000); // <-- INI JEDA 3 DETIKNYA
+  });
 
   btnKirim.addEventListener('click', async () => {
     const { value: pesan } = await Swal.fire({ title: "Tulis pesan", input: "textarea", confirmButtonText: "Kirim" });
