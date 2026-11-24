@@ -7,55 +7,50 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://files.dariku.my.id/dks205/s.css" />
 
-    <style>
-      /* === MODE B: HILANGIN BUKU TOTAL === */
-      body {
-        background: #FFF7E6 !important;
-        background-image: none !important;
-      }
+<style>
+  /* === MATIIN SEMUA BAYANGAN === */
+    * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-box-shadow: none !important;
+  }
 
-      /* Matikan semua background buku / cover / kartu */
-      .container, .container *, .cover, .card, .book, .content, .isi {
-        background: transparent !important;
-        background-image: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        outline: none !important;
-      }
+  *::before, *::after {
+    box-shadow: none !important;
+    filter: none !important;
+    background: none !important;
+    display: none !important;
+    content: none !important;
+  }
 
-      /* Matikan spiral + ornamen buku (pake ::before / ::after) */
-      .container::before, .container::after,
-      .cover::before, .cover::after,
-      .card::before, .card::after,
-      .content::before, .content::after {
-        display: none !important;
-        content: none !important;
-        background: none !important;
-      }
+  /* Background polos */
+  body {
+    background: #FFF7E6 !important;
+    background-image: none !important;
+  }
 
-      /* Biar containernya full lebar, gak kaya kartu lagi */
-      .container {
-        width: 100% !important;
-        max-width: 500px !important;
-        margin: 0 auto !important;
-        padding: 20px !important;
-        border-radius: 0 !important;
-      }
+  .container, .container *, .cover, .card, .book {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    outline: none !important;
+  }
 
-      /* Foto tetep kelihatan bagus, gak ketutup */
-      .container img {
-        background: transparent !important;
-        border-radius: 15px !important;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
-      }
+  /* Foto tetep ada bayangan dikit biar cantik, kalo mau polos total hapus bagian ini */
+  .container img {
+    border-radius: 15px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+  }
 
-      /* Tombol tetep kelihatan */
-      .btn-start, .btn-next, .btn-message {
-        background: #FFB6C1 !important;
-        color: #000 !important;
-        border: 2px solid #000 !important;
-      }
-    </style>
+  /* Tombol tetep kelihatan */
+  .btn-start, .btn-next, .btn-message {
+    background: #FFB6C1 !important;
+    color: #000 !important;
+    border: 2px solid #000 !important;
+    box-shadow: none !important;
+  }
+</style>
   </head>
   <body>
     <div class="preload">
