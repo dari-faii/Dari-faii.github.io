@@ -7,50 +7,71 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://files.dariku.my.id/dks205/s.css" />
 
-<style>
-  /* === MATIIN SEMUA BAYANGAN === */
-    * {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-    -webkit-box-shadow: none !important;
-  }
+    <style>
+      /* === MATIIN BUKU + BAYANGAN === */
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+      *::before, *::after {
+        box-shadow: none !important;
+        filter: none !important;
+      }
+      body {
+        background: #FFF7E6 !important;
+        background-image: none !important;
+      }
+      .container, .container *, .cover, .card, .book {
+        background: transparent !important;
+        background-image: none !important;
+        border: none !important;
+      }
 
-  *::before, *::after {
-    box-shadow: none !important;
-    filter: none !important;
-    background: none !important;
-    display: none !important;
-    content: none !important;
-  }
+      /* === TOMBOL LOVE AWAL === */
+      .btn-start {
+        background: transparent !important;
+        border: none !important;
+        font-size: 90px !important;
+        line-height: 1 !important;
+        padding: 20px !important;
+        cursor: pointer !important;
+        animation: degdegan 1s infinite !important;
+        position: relative !important;
+        z-index: 10 !important;
+      }
+      @keyframes degdegan {
+        0% { transform: scale(1); }
+        25% { transform: scale(1.15); }
+        40% { transform: scale(1); }
+        60% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
 
-  /* Background polos */
-  body {
-    background: #FFF7E6 !important;
-    background-image: none !important;
-  }
+      /* === LOVE KECIL YANG MELEDAK === */
+      .love-kecil {
+        position: fixed !important;
+        font-size: 24px !important;
+        pointer-events: none !important;
+        z-index: 9999 !important;
+        animation: meledak 1s ease-out forwards !important;
+      }
+      @keyframes meledak {
+        0% { transform: translate(0,0) scale(1); opacity: 1; }
+        100% { transform: translate(var(--x), var(--y)) scale(0.5) rotate(180deg); opacity: 0; }
+      }
 
-  .container, .container *, .cover, .card, .book {
-    background: transparent !important;
-    background-image: none !important;
-    border: none !important;
-    outline: none !important;
-  }
-
-  /* Foto tetep ada bayangan dikit biar cantik, kalo mau polos total hapus bagian ini */
-  .container img {
-    border-radius: 15px !important;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
-  }
-
-  /* Tombol tetep kelihatan */
-  .btn-start, .btn-next, .btn-message {
-    background: #FFB6C1 !important;
-    color: #000 !important;
-    border: 2px solid #000 !important;
-    box-shadow: none !important;
-  }
-</style>
+      /* Tombol lain tetep kelihatan */
+      .btn-next, .btn-message {
+        background: #FFB6C1 !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
+      }
+      .container img {
+        border-radius: 15px !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+      }
+    </style>
   </head>
   <body>
     <div class="preload">
@@ -60,7 +81,7 @@
     </div>
     <div class="container">
       <div class="btn-c">
-        <button class="btn-start show">Klik Disini</button>
+        <button class="btn-start show">❤️</button>
         <button class="btn-next">Lanjut</button>
         <button class="btn-message">Kirim Pesan</button>
       </div>
@@ -84,7 +105,6 @@
         { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
       ];
 
-      // ISI NOMOR WA KAMU DISINI, contoh: "628123456789"
       nomorWhatsapp = "";
 
       var swalo = Swal.mixin({ allowOutsideClick: false, reverseButtons: true });
@@ -103,6 +123,25 @@
 
       isKlikAudio = 1;
       DekaTutorial(konten, musik, textOpening, background, cover1, cover2, cover3, cover4, kirimPesan, isKlikAudio);
+
+      // === EFEK MELEDAK PAS PENCET LOVE ===
+      document.querySelector('.btn-start').addEventListener('click', function(e) {
+        const loves = ['❤️','💖','💗','💓','💕','🥰','❤️'];
+        for (let i = 0; i < 25; i++) {
+          const span = document.createElement('span');
+          span.className = 'love-kecil';
+          span.innerText = loves[Math.floor(Math.random() * loves.length)];
+          span.style.left = e.clientX + 'px';
+          span.style.top = e.clientY + 'px';
+          // Acak arah ledakannya
+          const angle = (Math.PI * 2 * i) / 25;
+          const jarak = 100 + Math.random() * 150;
+          span.style.setProperty('--x', Math.cos(angle) * jarak + 'px');
+          span.style.setProperty('--y', Math.sin(angle) * jarak + 'px');
+          document.body.appendChild(span);
+          setTimeout(() => span.remove(), 1000);
+        }
+      });
     </script>
   </body>
 </html>
