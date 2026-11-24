@@ -1,27 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" translate="no">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google" content="notranslate" />
 <title>Special For You</title>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: #FFF7E6;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-    padding: 20px;
+    display: flex; justify-content: center; align-items: flex-start;
+    padding: 24px 16px;
   }
-  .wrap { width: 100%; max-width: 420px; text-align: center; }
+  .wrap { width: 100%; max-width: 400px; text-align: center; }
 
-  /* COVER */
-  #cover h1 { font-size: 28px; margin-bottom: 10px; }
-  #cover p { font-size: 14px; color: #666; margin-bottom: 20px; }
+  /* COVER - BIAR GAK KOSONG */
+  #cover {
+    background: #FFF;
+    border: 2px solid #FFD6DE;
+    border-radius: 28px;
+    padding: 36px 20px 30px;
+    margin-top: 40px;
+    box-shadow: 0 10px 25px rgba(255, 150, 170, 0.15);
+  }
+  #cover h1 { font-size: 28px; }
+  #cover p { font-size: 14px; color: #888; margin: 8px 0 18px; }
   #btnLove {
     font-size: 90px; background: none; border: none; cursor: pointer;
     animation: degdegan 1s infinite;
@@ -31,26 +37,34 @@
     40% { transform: scale(1); } 60% { transform: scale(1.2); }
     100% { transform: scale(1); }
   }
-  .pencet { font-size: 14px; margin-top: 5px; }
+  .pencet { font-size: 14px; margin-top: 8px; }
+  .hiasan { font-size: 18px; letter-spacing: 6px; margin-top: 14px; }
 
-  /* ISI + EFEK FADE 3 DETIK */
+  /* ISI */
   #isi { display: none; }
+  .kartu-foto {
+    background: #FFF;
+    border: 2px solid #FFD6DE;
+    border-radius: 24px;
+    padding: 14px 14px 18px;
+    box-shadow: 0 10px 25px rgba(255, 150, 170, 0.15);
+  }
   #isi img {
-    width: 100%; border-radius: 18px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+    border-radius: 16px; display: block;
     transition: opacity 0.5s;
   }
   #isi.fade-out img, #isi.fade-out #ucapan { opacity: 0; }
-  #ucapan { font-size: 20px; font-weight: bold; margin: 18px 0; line-height: 1.4; transition: opacity 0.5s; }
+  #ucapan { font-size: 20px; font-weight: bold; margin: 18px 10px; line-height: 1.4; transition: opacity 0.5s; }
   .btn-pink {
     background: #FFB6C1; border: 2px solid #000;
-    padding: 12px 28px; border-radius: 30px;
+    padding: 12px 32px; border-radius: 30px;
     font-size: 16px; font-weight: bold; cursor: pointer;
   }
   .btn-pink:disabled { opacity: 0.6; cursor: wait; }
   #tunggu { display: none; font-size: 13px; color: #888; margin-top: 10px; }
+  .progress { font-size: 12px; color: #AAA; margin-top: 12px; }
 
-  /* LOVE MELEDAK */
   .love-kecil {
     position: fixed; font-size: 24px; pointer-events: none; z-index: 9999;
     animation: meledak 1s ease-out forwards;
@@ -64,22 +78,26 @@
 <body>
 <div class="wrap">
   <div id="cover">
+    <div class="hiasan">✨ 💗 ✨</div>
     <h1>Special For You</h1>
     <p>ada sesuatu buat kamu</p>
     <button id="btnLove">❤️</button>
     <div class="pencet">pencet love nya</div>
+    <div class="hiasan">💌 🧸 💌</div>
   </div>
 
   <div id="isi">
-    <img id="foto" src="" />
+    <div class="kartu-foto">
+      <img id="foto" src="" />
+    </div>
     <div id="ucapan"></div>
     <button id="btnNext" class="btn-pink">Lanjut ❤️</button>
-    <button id="btnKirim" class="btn-pink" style="display:none;">Kirim Pesan</button>
+    <button id="btnKirim" class="btn-pink" style="display:none;">Kirim Pesan 💌</button>
     <div id="tunggu">tunggu bentar ya... 💌</div>
+    <div class="progress" id="progress"></div>
   </div>
 </div>
 
-<!-- MUSIKNYA DISINI -->
 <audio id="musik" src="m4.mp3" loop preload="auto"></audio>
 
 <script>
@@ -90,10 +108,8 @@
     { gambar: "g2.jpg", ucapan: "kamu pasti bisa lewatinya...kan kamu hebat !!" },
     { gambar: "g3.jpg", ucapan: "SEMANGAT !!!" },
   ];
-
   const nomorWhatsapp = "";
   let index = 0;
-
   const cover = document.getElementById('cover');
   const isi = document.getElementById('isi');
   const foto = document.getElementById('foto');
@@ -101,11 +117,13 @@
   const btnNext = document.getElementById('btnNext');
   const btnKirim = document.getElementById('btnKirim');
   const tunggu = document.getElementById('tunggu');
+  const progress = document.getElementById('progress');
   const musik = document.getElementById('musik');
 
   function tampilkan() {
     foto.src = konten[index].gambar;
     ucapanEl.innerText = konten[index].ucapan;
+    progress.innerText = (index + 1) + " / " + konten.length;
     if (index === konten.length - 1) {
       btnNext.style.display = 'none';
       btnKirim.style.display = 'inline-block';
@@ -113,10 +131,7 @@
   }
 
   document.getElementById('btnLove').addEventListener('click', function(e) {
-    // 1. NYALAIN MUSIK - harus di dalam klik biar gak diblokir HP
     musik.play().catch(() => {});
-
-    // 2. EFEK MELEDAK
     const loves = ['❤️','💖','💗','💓','💕','🥰'];
     for (let i = 0; i < 25; i++) {
       const span = document.createElement('span');
@@ -131,7 +146,6 @@
       document.body.appendChild(span);
       setTimeout(() => span.remove(), 1000);
     }
-
     setTimeout(() => {
       cover.style.display = 'none';
       isi.style.display = 'block';
@@ -139,13 +153,11 @@
     }, 600);
   });
 
-  // 3. TOMBOL LANJUT + JEDA 3 DETIK
   btnNext.addEventListener('click', () => {
     btnNext.disabled = true;
     btnNext.innerText = "Tunggu...";
     tunggu.style.display = 'block';
     isi.classList.add('fade-out');
-
     setTimeout(() => {
       index++;
       tampilkan();
@@ -153,7 +165,7 @@
       btnNext.disabled = false;
       btnNext.innerText = "Lanjut ❤️";
       tunggu.style.display = 'none';
-    }, 3000); // <-- INI JEDA 3 DETIKNYA
+    }, 800);
   });
 
   btnKirim.addEventListener('click', async () => {
